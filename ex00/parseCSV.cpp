@@ -1,9 +1,8 @@
 #include "BitcoinExchange.hpp"
 
-void     read_csv(std::ifstream &file)
+std::map<std::string, double>     &read_csv(std::ifstream &file, std::map<std::string, double> &data)
 {   
     std::string line;
-    std::map<std::string, double> map;
     std::getline(file, line); //skip the header
     while(std::getline(file, line))
     {
@@ -13,23 +12,24 @@ void     read_csv(std::ifstream &file)
         std::string date = line.substr(0, pos);
         std::string rate_str = line.substr(pos + 1);
         double rate = std::strtod(rate_str.c_str(), NULL);
-        map[date] = rate;
+        data[date] = rate;
     }
-    std::map<std::string, double>::iterator it;
-    for(it = map.begin(); it != map.end(); ++it)
-    {
-        std::cout << it->first << " : " << it->second << "\n";
-    }
+    return data;
 }
 
-int    parse_csv(void)
+std::map<std::string, double>   &parse_csv(std::map<std::string, double> &data)
 {
     std::ifstream file("data.csv");
     if(!file.is_open())
     {
         std::cout << "Error: could not open CSV file" << std::endl;
-        return 0;
+        return data;
     }
-    read_csv(file);
-    return 1;
+    data = read_csv(file, data);
+    if(data.empty())
+    {
+        std::cout << "Error: empty data\n";
+    }
+
+    return data;
 }
