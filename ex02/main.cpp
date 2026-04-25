@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     std::vector<int> arr;
     if(!parser(argc, argv, arr))
     {
-        std::cout << "Invalid input\n";        
+        std::cout << "Error\n";        
         return 1;
     }
     for(size_t i = 0; i < arr.size(); i++)

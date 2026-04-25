@@ -5,5 +5,17 @@
 #include "cmath"
 #include "climits"
 #include "vector"
-int parse_input(char **argv);
-int parser(int argc, char **argv, std::vector<int> &arr);
+
+class PmergeMe
+{
+    public:
+        static int parser(int argc, char **argv, std::vector<int> &arr);
+    private:
+        static bool HasDuplicate(std::vector<int> &arr, int value);
+        static int parse_one_str(std::string str, std::vector<int> &arr);
+        static int parse_input(char **argv, std::vector<int> &arr);
+        static std::vector<std::pair<int,int>> makePairs(std::vector<int>& arr);
+        static void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector<int>& main_chain, 
+                                std::vector<int>& pending);
+         
+};
