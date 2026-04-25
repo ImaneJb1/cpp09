@@ -69,7 +69,7 @@ std::vector<std::pair<int,int>> PmergeMe::makePairs(std::vector<int>& arr)
 {
     std::vector<std::pair<int, int>> pairs;
     
-    for(int i = 0; i + 1 < arr.size(); i += 2)
+    for(size_t i = 0; i + 1 < arr.size(); i += 2)
     {
         int a = arr[i];
         int b = arr[i + 1];
@@ -84,10 +84,54 @@ std::vector<std::pair<int,int>> PmergeMe::makePairs(std::vector<int>& arr)
 void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector<int>& main_chain, 
                                 std::vector<int>& pending)
 {
-    for(int i =0 ; i < pairs.size(); i++)
+    for(size_t i =0 ; i < pairs.size(); i++)
     {
         main_chain.push_back(pairs[i].first);
         pending.push_back(pairs[i].second);
     }
 }
 
+/////////
+
+ std::vector<int> PmergeMe::buildInsertionOrder(int size)
+{
+    std::vector<int> jacob;
+    jacob.push_back(1);
+    jacob.push_back(3);
+
+    while(jacob.back() < size)
+    {
+        int n = jacob.size();
+        jacob.push_back(jacob[n-1] + 2 * jacob[n-2]);
+    }
+    std::vector<int> order;
+    std::vector<bool> used(size, false);
+    for(size_t i = 0; i < jacob.size(); i++)
+    {
+        int limit = std::min(jacob[i], size);
+        for(int j = limit -1; j >= 0; j--)
+        {
+            if(used[j] == false)
+            {
+                order.push_back(j);
+                used[j] = true;
+            }
+        }
+    }
+    return order;
+}
+
+int PmergeMe::searchBinaryPosition(std::vector<int> &main_chain, int value)
+{
+    int left = 0;
+    int right = main_chain.size();
+    while(left < right)
+    {
+        int mid = (left + right)/2;
+        if(main_chain[mid] < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
