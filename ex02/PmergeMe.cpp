@@ -135,3 +135,36 @@ int PmergeMe::searchBinaryPosition(std::vector<int> &main_chain, int value)
     }
     return left;
 }
+
+std::vector<int> PmergeMe::mergeInstertVector(std::vector<int>& arr)
+{
+    if(arr.size() <= 1)
+        return;
+    std::vector<std::pair<int, int>> pairs = makePairs(arr);
+
+    std::vector<int> main_chain;
+    std::vector<int> pending;
+
+    SplitPairs(pairs, main_chain, pending);
+
+    mergeInstertVector(main_chain);
+
+    std::vector<int> order = buildInsertionOrder(pending.size());
+
+    for(size_t i = 0; i < order.size(); i++)
+    {
+        int value = pending[order[i]];
+        int pos = searchBinaryPosition(main_chain, value);
+        main_chain.insert(main_chain.begin() + pos, value);
+    }
+
+    if(arr.size() % 2 != 0)
+    {
+        int last = arr.back();
+        int pos = searchBinaryPosition(main_chain, last);
+        main_chain.insert(main_chain.begin() + pos, last);
+    }
+
+    arr = main_chain;
+}
+
