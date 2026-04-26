@@ -75,7 +75,6 @@ std::vector<std::pair<int,int>> PmergeMe::makePairs(std::vector<int>& arr)
         int b = arr[i + 1];
         if(b > a)
             std::swap(a, b);
-        std::make_pair(a, b);
         pairs.push_back(std::make_pair(a,b));
     }
     return pairs;
@@ -136,8 +135,9 @@ int PmergeMe::searchBinaryPosition(std::vector<int> &main_chain, int value)
     return left;
 }
 
-std::vector<int> PmergeMe::mergeInstertVector(std::vector<int>& arr)
+void PmergeMe::mergeInstertVector(std::vector<int>& arr)
 {
+    //base case
     if(arr.size() <= 1)
         return;
     std::vector<std::pair<int, int>> pairs = makePairs(arr);
