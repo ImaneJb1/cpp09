@@ -21,6 +21,10 @@ class PmergeMe
         static std::vector<int> buildInsertionOrder(int size);
         static int searchBinaryPosition(std::vector<int> &main_chain, int value);
         static void mergeInstertVector(std::vector<int>& arr);
+        ~PmergeMe();
 
-
+    private:
+        PmergeMe();
+        PmergeMe(const PmergeMe &other);
+        PmergeMe &operator=(const PmergeMe &other);
 };

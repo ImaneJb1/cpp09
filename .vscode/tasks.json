@@ -7,12 +7,12 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${workspaceFolder}/ex01/*.cpp",
+                "/home/ijoubair/Desktop/cpp09/ex01/*.cpp",
                 "-o",
-                "${workspaceFolder}/RPN"
+                "/home/ijoubair/Desktop/cpp09/ex01//RPN"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "/home/ijoubair/Desktop/cpp09/ex01/"
             },
             "problemMatcher": [
                 "$gcc"

@@ -7,7 +7,7 @@
         "request": "launch",
         "program": "/home/ijoubair/Desktop/cpp09/ex01/RPN",
        "args": [
-          " "
+          "9 2 + 4 * + 3 -"
 ],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",

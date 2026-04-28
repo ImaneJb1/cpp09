@@ -1,5 +1,17 @@
 #include "PmergeMe.hpp"
 
+
+PmergeMe::PmergeMe()
+{}
+
+PmergeMe::PmergeMe(const PmergeMe &other){(void)other;}
+PmergeMe &PmergeMe::operator=(const PmergeMe &other){
+    (void)other;
+    return *this;
+}
+PmergeMe::~PmergeMe(){}
+
+
 bool PmergeMe::HasDuplicate(std::vector<int> &arr, int value)
 {
     for(size_t i = 0; i < arr.size(); i++)
