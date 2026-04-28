@@ -22,23 +22,6 @@ int  parse_value(std::string value, double &val)
     return 1;
 }
 
-// void    read_file(std::ifstream &file)
-// {
-//     std::string line;
-//     while(std::getline(file, line))
-//     {
-//         size_t pos = line.find('|', 0);
-//         if(pos == std::string::npos)
-//         {
-//             std::cout << "Error: bad input => " << line << std::endl;
-//         }
-//         std::string date = line.substr(0, pos);
-//         std::string value = line.substr(pos + 1);
-//         if(!parse_value(value))
-//             continue;
-//     }
-// }
-
 int parse_input(const char *filename)
 {
     std::ifstream file(filename);
@@ -63,7 +46,7 @@ int main(int argc, char **argv)
         std::ifstream file(argv[1]);
         if(!file.is_open())
         {
-            std::cout << "Could not open Input file\n";
+            std::cout << "Error: Could not open Input file\n";
             return 1;
         }
         std::string line;
