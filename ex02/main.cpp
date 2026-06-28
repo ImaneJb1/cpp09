@@ -1,6 +1,7 @@
 #include "PmergeMe.hpp"
 
-void printVec(const std::vector<int>& v)
+template <typename Container>
+void printVec(const Container& v)
 {
     for (size_t i = 0; i < v.size(); i++)
         std::cout << v[i] << " ";
@@ -9,38 +10,59 @@ void printVec(const std::vector<int>& v)
 
 int main(int argc, char **argv)
 {
-    std::vector<int> arr;
+    std::vector<int> vector_arr;
+    std::deque<int> deque_arr;
 
-    if (!PmergeMe::parser(argc, argv, arr))
+    if (!PmergeMe<std::vector<int> >::parser(argc, argv, vector_arr) ||
+        !PmergeMe<std::deque<int> >::parser(argc, argv, deque_arr))
     {
         std::cout << "Error: invalid input\n";
         return 1;
     }
+
     std::cout << "Before: ";
-    printVec(arr);
+    printVec(vector_arr);
 
-    
-    clock_t start = clock(); // cpu ticks before
+    // ---------------- Vector ----------------
 
+    std::vector<int> vec_tmp = vector_arr;
 
-    // PmergeMe::mergeInstertVector(arr);
-    
-    std::vector<int> tmp = arr;
-    for (int i = 0; i < 1000; i++)
-    {
-        PmergeMe::mergeInstertVector(tmp);
-    }
-    clock_t end = clock(); // cpu ticks after
+    clock_t start_vec = clock();
+    for(int i = 0; i < 1000; i++)
+        PmergeMe<std::vector<int> >::mergeInstertVector(vec_tmp);
+
+    clock_t end_vec = clock();
+
+    // ---------------- Deque ----------------
+
+    std::deque<int> deq_tmp = deque_arr;
+
+    clock_t start_deq = clock();
+    for(int i = 0; i < 1000; i++)
+        PmergeMe<std::deque<int> >::mergeInstertVector(deq_tmp);
+
+    clock_t end_deq = clock();
+
     std::cout << "After:  ";
-    printVec(tmp);
-    double time = static_cast<double>(end - start) * 1000000.0  / CLOCKS_PER_SEC;
-    time /= 1000.0;
-  
-    std::cout << "Time to process a range of ";
-    std::cout << arr.size();
-    std::cout << " elements with std::clock : ";
-    std::cout << std::fixed << std::setprecision(10);
-    std::cout << time;
-    std::cout << " us\n";
+    printVec(vec_tmp);
+
+    double vec_time =
+        static_cast<double>(end_vec - start_vec) * 1000.0 / CLOCKS_PER_SEC;
+
+    double deq_time =
+        static_cast<double>(end_deq - start_deq) * 1000.0 / CLOCKS_PER_SEC;
+
+    std::cout << std::fixed << std::setprecision(5);
+
+    std::cout << "Time to process a range of "
+              << vector_arr.size()
+              << " elements with std::vector : "
+              << vec_time << " us\n";
+
+    std::cout << "Time to process a range of "
+              << deque_arr.size()
+              << " elements with std::deque : "
+              << deq_time << " us\n";
+
     return 0;
 }

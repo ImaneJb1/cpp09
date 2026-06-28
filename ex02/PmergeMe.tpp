@@ -1,18 +1,24 @@
-#include "PmergeMe.hpp"
-
-
-PmergeMe::PmergeMe()
+template <typename Container>
+PmergeMe<Container>::PmergeMe()
 {}
 
-PmergeMe::PmergeMe(const PmergeMe &other){(void)other;}
-PmergeMe &PmergeMe::operator=(const PmergeMe &other){
+template <typename Container>
+PmergeMe<Container>::PmergeMe(const PmergeMe<Container> &other)
+{
+    (void)other;
+}
+
+template <typename Container>
+PmergeMe<Container> &PmergeMe<Container>::operator=(const PmergeMe<Container> &other){
     (void)other;
     return *this;
 }
-PmergeMe::~PmergeMe(){}
 
+template <typename Container>
+PmergeMe<Container>::~PmergeMe(){}
 
-bool PmergeMe::HasDuplicate(std::vector<int> &arr, int value)
+template <typename Container>
+bool PmergeMe<Container>::HasDuplicate(Container &arr, int value)
 {
     for(size_t i = 0; i < arr.size(); i++)
     {
@@ -22,7 +28,8 @@ bool PmergeMe::HasDuplicate(std::vector<int> &arr, int value)
     return false;
 }
 
-int PmergeMe::parse_one_str(std::string str, std::vector<int> &arr)
+template <typename Container>
+int PmergeMe<Container>::parse_one_str(std::string str, Container &arr)
 {
     std::string value;
     for(int i = 0; str[i]; i++)
@@ -44,7 +51,8 @@ int PmergeMe::parse_one_str(std::string str, std::vector<int> &arr)
     return 1;
 }
 
-int PmergeMe::parse_input(char **argv, std::vector<int> &arr)
+template <typename Container>
+int PmergeMe<Container>::parse_input(char **argv, Container &arr)
 {
 
     for(int i = 1; argv[i]; i++)
@@ -62,7 +70,8 @@ int PmergeMe::parse_input(char **argv, std::vector<int> &arr)
     return 1;
 }
 
-int PmergeMe::parser(int argc, char **argv, std::vector<int> &arr)
+template <typename Container>
+int PmergeMe<Container>::parser(int argc, char **argv, Container &arr)
 {
     if(argc == 2)
     {
@@ -76,8 +85,8 @@ int PmergeMe::parser(int argc, char **argv, std::vector<int> &arr)
 
 
 ///////////////////////////////////////
-
-std::vector<std::pair<int,int>> PmergeMe::makePairs(std::vector<int>& arr)
+template <typename Container>
+std::vector<std::pair<int,int>> PmergeMe<Container>::makePairs(Container& arr)
 {
     std::vector<std::pair<int, int>> pairs;
     
@@ -92,8 +101,9 @@ std::vector<std::pair<int,int>> PmergeMe::makePairs(std::vector<int>& arr)
     return pairs;
 }
 
-void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector<int>& main_chain, 
-                                std::vector<int>& pending)
+template <typename Container>
+void    PmergeMe<Container>::SplitPairs(std::vector<std::pair<int, int>> pairs, Container& main_chain, 
+                                Container& pending)
 {
     for(size_t i =0 ; i < pairs.size(); i++)
     {
@@ -103,10 +113,10 @@ void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector
 }
 
 /////////
-
- std::vector<int> PmergeMe::buildInsertionOrder(int size)
+template <typename Container>
+Container PmergeMe<Container>::buildInsertionOrder(int size)
 {
-    std::vector<int> jacob;
+    Container jacob;
     jacob.push_back(1);
     jacob.push_back(3);
 
@@ -115,7 +125,7 @@ void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector
         int n = jacob.size();
         jacob.push_back(jacob[n-1] + 2 * jacob[n-2]);
     }
-    std::vector<int> order;
+    Container order;
     std::vector<bool> used(size, false);
     for(size_t i = 0; i < jacob.size(); i++)
     {
@@ -132,7 +142,8 @@ void    PmergeMe::SplitPairs(std::vector<std::pair<int, int>> pairs, std::vector
     return order;
 }
 
-int PmergeMe::searchBinaryPosition(std::vector<int> &main_chain, int value)
+template <typename Container>
+int PmergeMe<Container>::searchBinaryPosition(Container &main_chain, int value)
 {
     int left = 0;
     int right = main_chain.size();
@@ -147,21 +158,22 @@ int PmergeMe::searchBinaryPosition(std::vector<int> &main_chain, int value)
     return left;
 }
 
-void PmergeMe::mergeInstertVector(std::vector<int>& arr)
+template <typename Container>
+void PmergeMe<Container>::mergeInstertVector(Container& arr)
 {
     //base case
     if(arr.size() <= 1)
         return;
     std::vector<std::pair<int, int>> pairs = makePairs(arr);
 
-    std::vector<int> main_chain;
-    std::vector<int> pending;
+    Container main_chain;
+    Container pending;
 
     SplitPairs(pairs, main_chain, pending);
 
     mergeInstertVector(main_chain);
 
-    std::vector<int> order = buildInsertionOrder(pending.size());
+    Container order = buildInsertionOrder(pending.size());
 
     for(size_t i = 0; i < order.size(); i++)
     {
