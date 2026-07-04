@@ -22,14 +22,20 @@ BitcoinExchange::BitcoinExchange(const char *filename)
 double    BitcoinExchange::getRate(std::string date)
 {
     if(!parse_date(date))
-        throw std::runtime_error("Error: invalid date");
+    {
+        std::cerr << ("Error: invalid date\n");
+        return -1;
+    }
     std::map<std::string, double>::iterator it = data.lower_bound(date);
     if(it == data.end())
         --it;
     if(it->first != date)
     {
         if (it == data.begin())
-            throw std::runtime_error("Error: No earlier date available");    
+        {
+            std::cerr << ("Error: No earlier date available\n");    
+            return -1;
+        }
         --it;
     }
     double rate = it->second;
@@ -60,7 +66,7 @@ void    BitcoinExchange::parse_csv(const char *filename)
         throw std::runtime_error("Could no open CSV file");
     read_csv(file);
     if(data.empty())
-        throw std::runtime_error("CSV file contains to Data");
+        throw std::runtime_error("CSV file Contains No Data");
 
 }
 int BitcoinExchange::parse_date(std::string date)

@@ -11,12 +11,12 @@ int  parse_value(std::string value, double &val)
     
     if(val < 0)
     {
-        std::cout << "Error: not a positive number\n";
+        std::cerr << "Error: not a positive number\n";
         return 0;
     }
     if(val > 1000)
     {
-        std::cout << "Error: too large number\n";
+        std::cerr << "Error: too large number\n";
         return 0;
     }
     return 1;
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         std::ifstream file(argv[1]);
         if(!file.is_open())
         {
-            std::cout << "Error: Could not open Input file\n";
+            std::cerr << "Error: Could not open Input file\n";
             return 1;
         }
         std::string line;
@@ -59,14 +59,16 @@ int main(int argc, char **argv)
                 size_t pos = line.find('|', 0);
                 if(pos == std::string::npos)
                 {
-                    std::cout << "Error: bad input => " << line << std::endl;
+                    std::cerr << "Error: bad input => " << line << std::endl;
                 }
                 std::string date = line.substr(0, pos);
                 std::string value = line.substr(pos + 1);
                 double value_d = 0;
                 if(!parse_value(value, value_d))
                     continue;
-                std::cout << btc.getRate(date) * value_d << std::endl;
+                double rate = btc.getRate(date);
+                if(rate >= 0) 
+                    std::cout << rate * value_d << std::endl;
             }
             
         }
