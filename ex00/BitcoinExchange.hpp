@@ -4,6 +4,7 @@
 #include "map"
 #include "fstream"
 #include "climits"
+# include "exception"
 
 class BitcoinExchange
 {

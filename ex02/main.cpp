@@ -28,8 +28,8 @@ int main(int argc, char **argv)
     std::vector<int> vec_tmp = vector_arr;
 
     clock_t start_vec = clock();
-    for(int i = 0; i < 1000; i++)
-        PmergeMe<std::vector<int> >::mergeInstertVector(vec_tmp);
+    // for(int i = 0; i < 1000; i++)
+    PmergeMe<std::vector<int> >::mergeInstertVector(vec_tmp);
 
     clock_t end_vec = clock();
 
@@ -38,8 +38,8 @@ int main(int argc, char **argv)
     std::deque<int> deq_tmp = deque_arr;
 
     clock_t start_deq = clock();
-    for(int i = 0; i < 1000; i++)
-        PmergeMe<std::deque<int> >::mergeInstertVector(deq_tmp);
+    // for(int i = 0; i < 1000; i++)
+    PmergeMe<std::deque<int> >::mergeInstertVector(deq_tmp);
 
     clock_t end_deq = clock();
 

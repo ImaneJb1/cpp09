@@ -31,12 +31,9 @@ void    RPN::calculate(char *operation)
     while(iss >> token)
     {
         if(isdigit(token[0])){
-            for(size_t i = 0; i < token.size(); i++)
-            {
-                if(!isdigit(token[i]))
-                    throw std::runtime_error("Error"); 
-            }
-            int num = atoi(token.c_str());
+            if(token.size() != 1)
+                throw std::runtime_error("Error"); 
+            int num = token[0] - '0';
             _stack.push(num);
         }
         else if(_stack.size() >= 2)
