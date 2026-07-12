@@ -1,25 +1,40 @@
 #include "BitcoinExchange.hpp"
-#include <iostream>
-#include <fstream>
+#include <cmath>
+
 
 int  parse_value(std::string value, double &val)
 {
     char *rest;
     val = strtod(value.c_str(), &rest);
-    if(*rest)
+    if(*rest || std::isnan(val))
+    {
+        std::cerr << "Error: Invalid value\n";
         return 0;
-    
+    }
     if(val < 0)
     {
         std::cerr << "Error: not a positive number\n";
         return 0;
     }
-    if(val > 1000)
+    if(val > 1000 )
     {
         std::cerr << "Error: too large number\n";
         return 0;
     }
     return 1;
+}
+
+
+void trim(std::string& str)
+{
+    size_t start = 0;
+    while (start < str.size() && std::isspace(static_cast<unsigned char>(str[start])))
+        start++;
+
+    size_t end = str.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(str[end - 1])))
+        end--;
+    str = str.substr(start, end - start);
 }
 
 int parse_input(const char *filename)
@@ -57,18 +72,27 @@ int main(int argc, char **argv)
             while(std::getline(file, line))
             {
                 size_t pos = line.find('|', 0);
-                if(pos == std::string::npos)
+                if(pos == std::string::npos && !line.empty())
                 {
                     std::cerr << "Error: bad input => " << line << std::endl;
                 }
                 std::string date = line.substr(0, pos);
                 std::string value = line.substr(pos + 1);
-                double value_d = 0;
-                if(!parse_value(value, value_d))
-                    continue;
-                double rate = btc.getRate(date);
-                if(rate >= 0) 
-                    std::cout << rate * value_d << std::endl;
+                trim(date); trim(value);
+                if(!value.empty()){
+                    double value_d = 0;
+                    if(!parse_value(value, value_d))
+                        continue;
+                    double rate = btc.getRate(date);
+                    if(rate >= 0)
+                    {
+                        std::cout << date << " => "<< value_d << " = "
+                           << std::fixed << std::setprecision(2) << rate * value_d << std::endl;
+                    }
+                }
+                else {
+                    std::cerr << "Error: bad input" << std::endl;
+                }
             }
             
         }

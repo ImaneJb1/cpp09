@@ -5,6 +5,11 @@
 #include "fstream"
 #include "climits"
 # include "exception"
+#include <iostream>
+#include <deque>
+#include <iomanip>
+#include <fstream>
+#include <cctype>
 
 class BitcoinExchange
 {
