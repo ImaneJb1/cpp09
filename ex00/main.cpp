@@ -27,6 +27,8 @@ int  parse_value(std::string value, double &val)
 
 void trim(std::string& str)
 {
+    if(str.empty())
+        return;
     size_t start = 0;
     while (start < str.size() && std::isspace(static_cast<unsigned char>(str[start])))
         start++;
@@ -71,27 +73,32 @@ int main(int argc, char **argv)
             std::string line;
             while(std::getline(file, line))
             {
-                size_t pos = line.find('|', 0);
-                if(pos == std::string::npos && !line.empty())
+                trim(line);
+                if(!line.empty())
                 {
-                    std::cerr << "Error: bad input => " << line << std::endl;
-                }
-                std::string date = line.substr(0, pos);
-                std::string value = line.substr(pos + 1);
-                trim(date); trim(value);
-                if(!value.empty()){
-                    double value_d = 0;
-                    if(!parse_value(value, value_d))
-                        continue;
-                    double rate = btc.getRate(date);
-                    if(rate >= 0)
+                    size_t pos = line.find('|', 0);
+                    if(pos == std::string::npos)
                     {
-                        std::cout << date << " => "<< value_d << " = "
-                           << std::fixed << std::setprecision(2) << rate * value_d << std::endl;
+                        std::cerr << "Error: bad input => " << line << std::endl;
+                        continue;
                     }
-                }
-                else {
-                    std::cerr << "Error: bad input" << std::endl;
+                    std::string date = line.substr(0, pos);
+                    std::string value = line.substr(pos + 1);
+                    trim(date); trim(value);
+                    if(!value.empty()){
+                        double value_d = 0;
+                        if(!parse_value(value, value_d))
+                            continue;
+                        double rate = btc.getRate(date);
+                        if(rate >= 0)
+                        {
+                            std::cout << date << " => "<< value_d << " = "
+                            << std::fixed << std::setprecision(2) << rate * value_d << std::endl;
+                        }
+                    }
+                    else {
+                        std::cerr << "Error: Expected a value\n";
+                    }
                 }
             }
             

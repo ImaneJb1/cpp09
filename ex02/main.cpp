@@ -47,10 +47,10 @@ int main(int argc, char **argv)
     printVec(vec_tmp);
 
     double vec_time =
-        static_cast<double>(end_vec - start_vec) * 1000.0 / CLOCKS_PER_SEC;
+        static_cast<double>(end_vec - start_vec) * 1000000.0 / CLOCKS_PER_SEC;
 
     double deq_time =
-        static_cast<double>(end_deq - start_deq) * 1000.0 / CLOCKS_PER_SEC;
+        static_cast<double>(end_deq - start_deq) * 1000000.0 / CLOCKS_PER_SEC;
 
     std::cout << std::fixed << std::setprecision(5);
 
