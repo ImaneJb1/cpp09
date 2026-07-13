@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <stdlib.h>
 #include <iostream>
 #include "cmath"
@@ -8,23 +9,51 @@
 #include <ctime>
 #include <iomanip>
 #include <deque>
+#include <vector>
 
-template <typename Container>
+
+
+struct s_node
+{
+    int value;
+    size_t id;
+};
+
+struct s_pending_node
+{
+    s_node node;
+    size_t bigPairId;
+};
+
+
 class PmergeMe
 {
-    public:
-        static int parser(int argc, char **argv, Container &arr);
     private:
-        static bool HasDuplicate(Container &arr, int value);
-        static int parse_one_str(std::string str, Container &arr);
-        static int parse_input(char **argv, Container &arr);
-        static std::vector<std::pair<int,int>> makePairs(Container& arr);
-        static void    SplitPairs(std::vector<std::pair<int, int>> pairs, Container& main_chain, 
-                                Container& pending);
+        std::vector<s_node> m_vector;
+        std::deque<s_node> m_deque;
     public:
-        static Container buildInsertionOrder(int size);
-        static int searchBinaryPosition(Container &main_chain, int value);
-        static void mergeInstertVector(Container& arr);
+        PmergeMe(int argc, char **argv);
+    private:
+        template<typename Container>
+        static bool HasDuplicate(Container &arr, int value);
+        int parse_one_str(std::string str);
+        int parse_input(char **argv);
+
+        template<typename Container>
+        static std::vector<std::pair<s_node,s_node> > makePairs(Container& arr);
+        template<typename Container>
+        static void    SplitPairs(std::vector<std::pair<s_node, s_node> > pairs, Container& main_chain, 
+                                std::vector<s_pending_node>& pending);
+    public:
+        std::vector<int> buildInsertionOrder(int size);
+        size_t getSize() const;
+        template<typename Container>
+        int searchBinaryPosition(Container &main_chain, s_pending_node &value,  size_t bigId, int odd) const;
+        void printVec() const;
+        
+        template<typename Container>
+        void FordJhonson(Container& container);
+        void    runAlgo();
         ~PmergeMe();
 
     private:
@@ -32,5 +61,3 @@ class PmergeMe
         PmergeMe(const PmergeMe &other);
         PmergeMe &operator=(const PmergeMe &other);
 };
-
-#include "PmergeMe.tpp"

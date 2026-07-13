@@ -1,5 +1,5 @@
 CPP = c++
-CPPFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 NAME = btc
 SRC = $(shell find . -name "*.cpp")
 OBJ = $(SRC:%.cpp=%.o)
