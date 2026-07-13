@@ -2,6 +2,7 @@
 #include <cmath>
 
 
+
 int  parse_value(std::string value, double &val)
 {
     char *rest;
@@ -47,12 +48,24 @@ int parse_input(const char *filename)
     return 1;
 }
 
+int parse_header(std::string header)
+{
+    size_t pos = header.find('|', 0);
+    if(pos == std::string::npos)
+        return 0;
+    std::string date = header.substr(0 , pos);
+    std::string value = header.substr(pos+1);
+    trim(date); trim(value);
+    if((date != "date") || (value != "value"))
+        return 0;
+    return 1;
+}
 
 int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        std::cerr << "Error: usage ./btc input.txt" << std::endl;
+        std::cerr << "Error: Please enter an input file" << std::endl;
         return 1;
     }
     (void)argv;
@@ -70,6 +83,11 @@ int main(int argc, char **argv)
 
         while (std::getline(file, line))
         {      
+            if(!parse_header(line))
+            {
+                std::cerr << "Missing a valid header = `date | value`\n";
+                break;
+            }
             std::string line;
             while(std::getline(file, line))
             {

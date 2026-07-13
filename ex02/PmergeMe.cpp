@@ -213,7 +213,7 @@ void    PmergeMe::runAlgo()
             << getSize()
             << " elements with std::deque : "
             << deq_time << " us\n";
-    // std::cout << "the program made " << g_comparison << " comparisons\n";
+    std::cout << "the program made " << g_comparison << " comparisons\n";
 }
 
 template <typename Container>
